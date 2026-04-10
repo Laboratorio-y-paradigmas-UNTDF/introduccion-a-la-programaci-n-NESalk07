@@ -216,7 +216,8 @@ export function aplicarDescuentoRegistros(
  * Ejemplo: soloMayusculas(["hola", "mundo"]) → ["HOLA", "MUNDO"]
  */
 export function soloMayusculas(nombres: string[]): string[] {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  return nombres.map((nombre) => nombre.toUpperCase()); // Crea un nuevo array con los nombres convertidos a mayúsculas
 }
 
 /**
@@ -231,7 +232,8 @@ export function productosBaratos(
   productos: { nombre: string; precio: number }[],
   precioMax: number
 ): { nombre: string; precio: number }[] {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  return productos.filter((prod) => prod.precio <= precioMax); // Crea un nuevo array con los productos que cumplen la condición de precio
 }
 
 /**
@@ -242,7 +244,9 @@ export function productosBaratos(
  * Ejemplo: sumaTotal([1,2,3,4,5]) === 15
  */
 export function sumaTotal(nums: number[]): number {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  return nums.reduce((acc, num) => acc + num, 0); // Usa reduce para sumar todos los números, comenzando con un acumulador inicial de 0
+
 }
 
 /**
@@ -254,7 +258,11 @@ export function sumaTotal(nums: number[]): number {
  *          contarPalabras("") → {}
  */
 export function contarPalabras(texto: string): Record<string, number> {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  return texto.split(" ").filter((s): s is string => !!s).reduce((accumulador, palabra) => {
+    accumulador[palabra] = (accumulador[palabra] || 0) + 1;
+    return accumulador;
+  }, {} as Record<string, number>);
 }
 
 /**
@@ -268,7 +276,11 @@ export function contarPalabras(texto: string): Record<string, number> {
  *          sumaFiltradosAlCuadrado([1,2,3], 10) === 0  (ninguno supera umbral)
  */
 export function sumaFiltradosAlCuadrado(nums: number[], umbral: number): number {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  return nums
+    .filter((n) => n > umbral) // Filtra los números mayores al umbral
+    .map((n) => n ** 2)        // Eleva al cuadrado los números filtrados
+    .reduce((acc, n) => acc + n, 0); // Suma todos los números al cuadrado, comenzando con un acumulador inicial de 0
 }
 
 /**
@@ -283,7 +295,10 @@ export function sumaFiltradosAlCuadrado(nums: number[], umbral: number): number 
 export function promedioAprobados(
   estudiantes: { nombre: string; nota: number }[]
 ): number {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  const aprobados = estudiantes.filter((est) => est.nota >= 6);
+  const total = aprobados.reduce((acc, est) => acc + est.nota, 0);
+  return aprobados.length > 0 ? total / aprobados.length : 0;
 }
 
 /**
@@ -292,7 +307,8 @@ export function promedioAprobados(
  * SIN loops. SIN reduce manual de aplanamiento.
  */
 export function aplanarLista<T>(listas: T[][]): T[] {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  return listas.flatMap((lista) => lista); // Usa flatMap para aplanar el array de arrays en un solo array
 }
 
 /**
@@ -310,7 +326,10 @@ export function aplanarLista<T>(listas: T[][]): T[] {
 export function totalVentasCredito(
   transacciones: { monto: number; tipo: "credito" | "debito" }[]
 ): number {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  return transacciones
+    .filter((t) => t.tipo === "credito" && t.monto > 100) // Filtra solo las transacciones que son de tipo 'credito' y tienen monto > 100
+    .reduce((acc, t) => acc + t.monto, 0); // Suma los montos de las transacciones filtradas, comenzando con un acumulador inicial de 0
 }
 
 // ─── GRUPO 4: Composición y HOF ────────────────────────────────────────────
