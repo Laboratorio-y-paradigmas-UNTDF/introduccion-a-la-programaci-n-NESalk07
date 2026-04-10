@@ -43,7 +43,10 @@ export function agruparPorParidad(nums: number[]): {
   pares: number[];
   impares: number[];
 } {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  const pares = nums.filter((n) => n % 2 === 0);
+  const impares = nums.filter((n) => n % 2 !== 0);
+  return { pares, impares }; 
 }
 
 /**
@@ -56,7 +59,12 @@ export function agruparPorParidad(nums: number[]): {
  * Ejemplo: fibonacci(10) === 55
  */
 export function fibonacci(n: number): number {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  return n <= 0 
+    ? 0 
+    : n === 1 
+      ? 1 
+      : fibonacci(n - 1) + fibonacci(n - 2);
 }
 
 /**
@@ -77,7 +85,31 @@ export function validarContrasena(pass: string): {
   valida: boolean;
   errores: string[];
 } {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  const reglas = [
+    { 
+      cumple: pass.length >= 8, 
+      msg: "Debe tener al menos 8 caracteres" 
+    },
+    { 
+      cumple: /[A-Z]/.test(pass), 
+      msg: "Debe contener al menos una letra mayúscula" 
+    },
+    { 
+      cumple: /\d/.test(pass), 
+      msg: "Debe contener al menos un dígito" 
+    }
+  ];
+
+  // Filtro de errores: solo los mensajes de las reglas que no se cumplen
+  const errores = reglas
+    .filter(r => !r.cumple)
+    .map(r => r.msg);
+
+  return {
+    valida: errores.length === 0,
+    errores: errores
+  };
 }
 
 /**
@@ -93,7 +125,8 @@ export function componerNombre(
   apellido: string,
   titulo?: string
 ): string {
-  throw new Error("No implementado");
+ // throw new Error("No implementado");
+  return titulo ? `${titulo} ${nombre} ${apellido}` : `${nombre} ${apellido}`;
 }
 
 // ─── GRUPO 2: Inmutabilidad ───────────────────────────────────────────────
