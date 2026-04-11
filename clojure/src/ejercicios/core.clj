@@ -277,7 +277,12 @@
    (frecuencias-manual [:a :b :a]) => {:a 2, :b 1}
    (frecuencias-manual [])         => {}"
   [coll]
-  (throw (ex-info "No implementado" {:fn "frecuencias-manual"})))
+  ;;(throw (ex-info "No implementado" {:fn "frecuencias-manual"})))
+  [coll]
+  (reduce (fn [acc x]
+            (assoc acc x (inc (get acc x 0))))
+          {}
+          coll)) "cuenta la frecuencia de cada elemento usando reduce"
 
 (defn agrupar-por-tipo
   "CLJ-22: Agrupa vector de mapas {:nombre :tipo} por valor de :tipo.
@@ -290,7 +295,11 @@
    => {\"X\" [{:nombre \"A\" :tipo \"X\"} {:nombre \"B\" :tipo \"X\"}],
        \"Y\" [{:nombre \"C\" :tipo \"Y\"}]}"
   [registros]
-  (throw (ex-info "No implementado" {:fn "agrupar-por-tipo"})))
+  ;;(throw (ex-info "No implementado" {:fn "agrupar-por-tipo"})))
+  (reduce (fn [acc r]
+            (update acc (:tipo r) (fnil conj []) r))
+          {}
+          registros)) "agrupa los mapas por tipo usando reduce"
 
 (defn aplicar-descuento
   "CLJ-23: Aplica exactamente 10% de descuento a :precio de cada mapa.
@@ -301,7 +310,10 @@
                        {:nombre \"B\" :precio 200}])
    => ({:nombre \"A\" :precio 90.0} {:nombre \"B\" :precio 180.0})"
   [productos]
-  (throw (ex-info "No implementado" {:fn "aplicar-descuento"})))
+  ;;(throw (ex-info "No implementado" {:fn "aplicar-descuento"})))
+  (map (fn [p]
+          (assoc p :precio (* (:precio p) 0.9)))
+        productos))
 
 (defn zip-listas
   "CLJ-24: Combina dos listas en pares usando map.
@@ -311,7 +323,9 @@
    (zip-listas [1 2 3] [:a :b :c]) => ([1 :a] [2 :b] [3 :c])
    (zip-listas [] [])              => ()"
   [lista1 lista2]
-  (throw (ex-info "No implementado" {:fn "zip-listas"})))
+  ;;(throw (ex-info "No implementado" {:fn "zip-listas"})))
+  (map vector lista1 lista2))
+
 
 (defn pipeline-estudiantes
   "CLJ-25: Pipeline funcional completo.
@@ -328,4 +342,9 @@
 
    (pipeline-estudiantes [{:nombre \"Beto\" :nota 3}]) => []"
   [estudiantes]
-  (throw (ex-info "No implementado" {:fn "pipeline-estudiantes"})))
+  ;;(throw (ex-info "No implementado" {:fn "pipeline-estudiantes"})))
+  (->> estudiantes
+       (filter #(>= (:nota %) 6))
+       (sort-by :nota >)
+       (map :nombre)
+       (vec))) "realiza un pipeline funcional para procesar la lista de estudiantes"
