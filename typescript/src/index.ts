@@ -344,7 +344,8 @@ export function totalVentasCredito(
  *   compose(inc, doble)(3) === 7  // doble(3)=6, luego inc(6)=7
  */
 export function compose<T>(f: (x: T) => T, g: (x: T) => T): (x: T) => T {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  return (x: T) => f(g(x)); // Retorna una nueva función que aplica g primero y luego f
 }
 
 /**
@@ -360,7 +361,9 @@ export function compose<T>(f: (x: T) => T, g: (x: T) => T): (x: T) => T {
  *   proc(3) === 7
  */
 export function pipe<T>(...fns: Array<(x: T) => T>): (x: T) => T {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  return (x: T) => fns.reduce((valorActual, fn) => fn(valorActual), x); 
+  // Retorna una nueva función que aplica cada función en el array de izquierda a derecha
 }
 
 /**
@@ -374,7 +377,9 @@ export function pipe<T>(...fns: Array<(x: T) => T>): (x: T) => T {
  *   sumarCurried(10)(5) === 15
  */
 export function curry2<A, B, C>(fn: (a: A, b: B) => C): (a: A) => (b: B) => C {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  return (a: A) => (b: B) => fn(a, b); 
+  // Retorna una función que toma a y devuelve otra función que toma b y aplica fn con ambos argumentos
 }
 
 /**
@@ -388,7 +393,9 @@ export function curry2<A, B, C>(fn: (a: A, b: B) => C): (a: A) => (b: B) => C {
  *   triplicar(7) === 21
  */
 export function partial<A, B, C>(fn: (a: A, b: B) => C, a: A): (b: B) => C {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  return (b: B) => fn(a, b); 
+  // Retorna una función que toma b y aplica fn con a fijo y b como argumento variable
 }
 
 // ─── GRUPO 5: Contraste Imperativo vs Funcional ────────────────────────────
@@ -416,7 +423,12 @@ export function partial<A, B, C>(fn: (a: A, b: B) => C, a: A): (b: B) => C {
 export function procesarVentas(
   ventas: { monto: number; tipo: string }[]
 ): { total: number; count: number; promedio: number } {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  const ventasFiltradas = ventas.filter((v) => v.monto > 100); // Filtra las ventas con monto > 100
+  const total = ventasFiltradas.reduce((acc, v) => acc + v.monto, 0); // Suma los montos de las ventas filtradas, comenzando con un acumulador inicial de 0
+  const count = ventasFiltradas.length; // Cuenta cuántas ventas cumplen la condición
+  const promedio = count > 0 ? total / count : 0; // Calcula el promedio, evitando división por cero
+  return { total, count, promedio };
 }
 
 /**
@@ -439,7 +451,27 @@ export function estadisticasArray(nums: number[]): {
   promedio: number;
   mediana: number;
 } {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  // 1. Cálculos base. 
+  // Si el array está vacío, usamos valores por defecto para evitar errores.
+  const tieneElementos = nums.length > 0;
+  
+  const sum = tieneElementos ? nums.reduce((acc, n) => acc + n, 0) : 0;
+  const min = tieneElementos ? Math.min(...nums) : 0;
+  const max = tieneElementos ? Math.max(...nums) : 0;
+  const promedio = tieneElementos ? sum / nums.length : 0;
+
+  // 2. Lógica para la mediana (ordenamos primero)
+  const sorted = tieneElementos ? [...nums].sort((a, b) => a - b) : [];
+  const m = Math.floor(sorted.length / 2);
+  const mediana = !tieneElementos 
+    ? 0 
+    : sorted.length % 2 !== 0
+      ? sorted[m]
+      : (sorted[m - 1] + sorted[m]) / 2;
+  
+      //3. Retorno del objeto con todas las estadísticas
+  return { min, max, sum, promedio, mediana };
 }
 
 /**
@@ -470,5 +502,12 @@ export function estadisticasArray(nums: number[]): {
 export function transformarDatos(
   registros: { nombre: string; ventas: number[]; activo: boolean }[]
 ): { nombre: string; promedio: number }[] {
-  throw new Error("No implementado");
+  //throw new Error("No implementado");
+  return registros
+    .filter((reg) => reg.activo) // Filtra solo los registros activos
+    .map((reg) => ({
+      nombre: reg.nombre,
+      promedio: reg.ventas.length > 0 ? Number((reg.ventas.reduce((acc, v) => acc + v, 0) / reg.ventas.length).toFixed(2)) : 0
+    })) // Calcula el promedio de ventas para cada registro, redondeado a 2 decimales
+    .sort((a, b) => b.promedio - a.promedio); // Ordena por promedio descendente
 }
