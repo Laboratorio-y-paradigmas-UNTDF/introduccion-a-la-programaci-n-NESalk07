@@ -215,7 +215,10 @@
    (factorial 5) => 120
    (factorial 10) => 3628800"
   [n]
-  (throw (ex-info "No implementado" {:fn "factorial"})))
+  ;;(throw (ex-info "No implementado" {:fn "factorial"})))
+  (cond
+    (zero? n) 1
+    :else (* n (factorial (dec n))))) "calcula el factorial de un número usando recursión"
 
 (defn fibonacci-clj
   "CLJ-18: Fibonacci recursivo.
@@ -226,7 +229,13 @@
    (fibonacci-clj 10) => 55
    (fibonacci-clj 15) => 610"
   [n]
-  (throw (ex-info "No implementado" {:fn "fibonacci-clj"})))
+  ;;(throw (ex-info "No implementado" {:fn "fibonacci-clj"})))
+  (loop [i n
+         a 0
+         b 1]
+    (cond
+      (zero? i) a
+      :else (recur (dec i) b (+ a b))))) "calcula el Fibonacci de un número usando recursión"
 
 (defn aplanar-profundo
   "CLJ-19: Aplana una estructura anidada arbitrariamente profunda con recursión.
@@ -236,7 +245,12 @@
    (aplanar-profundo [[1 2] [3 [4 [5]]]]) => (1 2 3 4 5)
    (aplanar-profundo [])                  => ()"
   [coll]
-  (throw (ex-info "No implementado" {:fn "aplanar-profundo"})))
+  ;;(throw (ex-info "No implementado" {:fn "aplanar-profundo"})))
+  (cond
+    (empty? coll) '()
+    (coll? (first coll)) (concat (aplanar-profundo (first coll)) 
+                                        (aplanar-profundo (rest coll)))
+    :else (cons (first coll) (aplanar-profundo (rest coll))))) "aplana una estructura anidada usando recursión"
 
 (defn potencia
   "CLJ-20: Eleva base a exp (entero no negativo) con recursión.
@@ -248,7 +262,10 @@
    (potencia 3 3)   => 27
    (potencia 5 0)   => 1"
   [base exp]
-  (throw (ex-info "No implementado" {:fn "potencia"})))
+  ;;(throw (ex-info "No implementado" {:fn "potencia"})))
+  (cond
+    (zero? exp) 1
+    :else (* base (potencia base (dec exp))))) "calcula la potencia de un número usando recursión"
 
 ;; ─── GRUPO 5: Colecciones y mapas ────────────────────────────────
 
